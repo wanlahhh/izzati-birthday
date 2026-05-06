@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Izzati ❤️</title>
+
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#ff758c,#ff7eb3);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+.container {
+  padding:20px;
+}
+
+h1 {
+  font-size:2.8em;
+  animation: fadeIn 2s ease;
+}
+
+button {
+  padding:12px 20px;
+  border:none;
+  border-radius:12px;
+  background:#ff4d6d;
+  color:white;
+  font-size:16px;
+  margin:10px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover {
+  transform:scale(1.1);
+}
+
+.hidden { display:none; }
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* floating hearts */
+.heart {
+  position:absolute;
+  font-size:24px;
+  animation: floatUp 4s linear;
+}
+
+@keyframes floatUp {
+  from {transform:translateY(0); opacity:1;}
+  to {transform:translateY(-200px); opacity:0;}
+}
+
+/* memory game */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(4,70px);
+  gap:10px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.card {
+  width:70px;
+  height:70px;
+  background:white;
+  color:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎂 Happy Birthday Sayang 💖</h1>
+  <h2>Izzati Ilyanie</h2>
+
+  <button onclick="startSite()">Start Surprise 💌</button>
+
+  <div id="main" class="hidden">
+
+    <p id="typing"></p>
+
+    <button onclick="showLetter()">Open Love Letter 💕</button>
+    <button onclick="heartGame()">Love Game 💖</button>
+    <button onclick="memoryGame()">Memory Game 🧠</button>
+
+    <h3 id="score"></h3>
+    <div id="memory" class="grid hidden"></div>
+
+  </div>
+
+</div>
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+
+<script>
+
+// start
+function startSite() {
+  document.getElementById("main").classList.remove("hidden");
+  document.getElementById("music").play();
+  typeText();
+}
+
+// typing effect
+const text = "Selamat Hari Jadi sayang 💕\nSaya bersyukur sangat ada awak dalam hidup saya ❤️\nSemoga semua impian awak tercapai 🌸\nSaya sayang awak sangat-sangat 💖";
+let i = 0;
+
+function typeText() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeText, 40);
+  }
+}
+
+// love letter
+function showLetter() {
+  alert("Untuk Izzati ❤️\n\nTerima kasih sebab hadir dalam hidup saya.\nAwak adalah kebahagiaan saya setiap hari.\nSaya janji akan jaga awak sebaik mungkin 💕\n\nI love you forever 💖");
+}
+
+// ❤️ HEART GAME
+let score = 0;
+
+function heartGame() {
+  score = 0;
+  document.getElementById("score").innerText = "Score: 0";
+
+  for (let i=0;i<15;i++) {
+    let heart = document.createElement("div");
+    heart.innerHTML="❤️";
+    heart.className="heart";
+
+    heart.style.left=Math.random()*window.innerWidth+"px";
+    heart.style.top=Math.random()*window.innerHeight+"px";
+
+    heart.onclick=function(){
+      score++;
+      document.getElementById("score").innerText="Score: "+score;
+      heart.remove();
+    };
+
+    document.body.appendChild(heart);
+  }
+}
+
+// 🧠 MEMORY GAME
+const emojis=["💖","🌸","🎂","😍","💘","🥰","❤️","😘"];
+let cards=[...emojis,...emojis];
+let first=null;
+
+function memoryGame(){
+  const grid=document.getElementById("memory");
+  grid.innerHTML="";
+  grid.classList.remove("hidden");
+
+  cards.sort(()=>0.5-Math.random());
+
+  cards.forEach(e=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerText="?";
+    card.dataset.val=e;
+
+    card.onclick=function(){
+      if(card.innerText!=="?") return;
+      card.innerText=e;
+
+      if(!first){
+        first=card;
+      } else {
+        if(first.dataset.val===e){
+          first=null;
+        } else {
+          setTimeout(()=>{
+            card.innerText="?";
+            first.innerText="?";
+            first=null;
+          },500);
+        }
+      }
+    };
+
+    grid.appendChild(card);
+  });
+}
+
+</script>
+
+</body>
+</html>
